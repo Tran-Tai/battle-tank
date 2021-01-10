@@ -30,7 +30,7 @@ var a = [[9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9
         var score = 0;
         function startGame() {
             myGameArea.start();
-            playerTank = new tank(32, 32, "images/t1.png", 300, 594);
+            playerTank = new tank(32, 32, "Images/t1.png", 300, 594);
         }
         var myGameArea = {
             canvas: document.createElement("canvas"),
@@ -67,13 +67,13 @@ var a = [[9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9
                     for (j = 1; j < 26; j++) {
                         if (a[i][j] == 1) {
                             let img = new Image();
-                            img.src = "images/brick.png";
+                            img.src = "Images/brick.png";
                             ctx = myGameArea.context;
                             ctx.drawImage(img, (j - 1) * 32, (i - 1) * 32 + 50, 32, 32);
                         }
                         if (a[i][j] == 2) {
                             let img = new Image();
-                            img.src = "images/steel.png";
+                            img.src = "Images/steel.png";
                             ctx = myGameArea.context;
                             ctx.drawImage(img, (j - 1) * 32, (i - 1) * 32 + 50, 32, 32);
                         }
@@ -118,31 +118,31 @@ var a = [[9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9
             }
 
             this.moveUp = function () {
-                if (myGameArea.frameNo % 2 == 0) this.img.src = "images/t1.png";
-                else this.img.src = "images/t12.png";
+                if (myGameArea.frameNo % 2 == 0) this.img.src = "Images/t1.png";
+                else this.img.src = "Images/t12.png";
                 if ((a[this.iy - 1][this.ix] == 0 && (a[this.iy - 1][this.ix + 1] == 0 || (this.x % 32) == 0))
                     || this.y - (this.iy * 32 + 18) > 0) this.speedY = -2;
                 this.dir = "up";
             }
 
             this.moveDown = function () {
-                if (myGameArea.frameNo % 2 == 0) this.img.src = "images/t3.png";
-                else this.img.src = "images/t32.png";
+                if (myGameArea.frameNo % 2 == 0) this.img.src = "Images/t3.png";
+                else this.img.src = "Images/t32.png";
                 if (a[this.iy + 1][this.ix] == 0 && (a[this.iy + 1][this.ix + 1] == 0 || (this.x % 32) == 0)) this.speedY = 2;
                 this.dir = "down";
             }
 
             this.moveLeft = function () {
-                if (myGameArea.frameNo % 2 == 0) this.img.src = "images/t4.png";
-                else this.img.src = "images/t42.png";
+                if (myGameArea.frameNo % 2 == 0) this.img.src = "Images/t4.png";
+                else this.img.src = "Images/t42.png";
                 if (((a[this.iy][this.ix - 1] == 0) && ((a[this.iy + 1][this.ix - 1] == 0) || ((this.y - 18) % 32) == 0))
                     || (this.x - ((this.ix - 1) * 32) > 0)) this.speedX = -2;
                 this.dir = "left";
             }
 
             this.moveRight = function () {
-                if (myGameArea.frameNo % 2 == 0) this.img.src = "images/t2.png";
-                else this.img.src = "images/t22.png";
+                if (myGameArea.frameNo % 2 == 0) this.img.src = "Images/t2.png";
+                else this.img.src = "Images/t22.png";
                 if (a[this.iy][this.ix + 1] == 0 && (a[this.iy + 1][this.ix + 1] == 0 || (this.y - 18) % 32 == 0)) this.speedX = 2;
                 this.dir = "right";
             }
@@ -187,7 +187,7 @@ var a = [[9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9
                     break;
             }
             this.img = new Image();
-            this.img.src = "images/" + this.type + "3.png";
+            this.img.src = "Images/" + this.type + "3.png";
             this.gamearea = myGameArea;
             this.width = width;
             this.height = height;
@@ -270,7 +270,7 @@ var a = [[9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9
             }
 
             this.moveUp = function () {
-                this.img.src = "images/" + this.type + "1.png";
+                this.img.src = "Images/" + this.type + "1.png";
                 if ((a[this.iy - 1][this.ix] == 0) || (this.y - (this.iy * 32 + 18) > 0)) {
                     this.speedY = -1;
                     this.speedX = 0;
@@ -282,7 +282,7 @@ var a = [[9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9
             }
 
             this.moveDown = function () {
-                this.img.src = "images/" + this.type + "3.png";
+                this.img.src = "Images/" + this.type + "3.png";
                 if (a[this.iy + 1][this.ix] == 0) {
                     this.speedY = 1;
                     this.speedX = 0;
@@ -294,7 +294,7 @@ var a = [[9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9
             }
 
             this.moveLeft = function () {
-                this.img.src = "images/" + this.type + "4.png";
+                this.img.src = "Images/" + this.type + "4.png";
                 if (((a[this.iy][this.ix - 1] == 0) || (this.x - ((this.ix - 1) * 32) > 0))) {
                     this.speedX = -1;
                     this.speedY = 0;
@@ -306,7 +306,7 @@ var a = [[9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9
             }
 
             this.moveRight = function () {
-                this.img.src = "images/" + this.type + "2.png";
+                this.img.src = "Images/" + this.type + "2.png";
                 if (a[this.iy][this.ix + 1] == 0) {
                     this.speedX = 1;
                     this.speedY = 0;
@@ -351,22 +351,22 @@ var a = [[9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9
                 case "up":
                     this.speedX = 0;
                     this.speedY = -3;
-                    this.img.src = "images/b1.png";
+                    this.img.src = "Images/b1.png";
                     break;
                 case "down":
                     this.speedX = 0;
                     this.speedY = 3;
-                    this.img.src = "images/b3.png";
+                    this.img.src = "Images/b3.png";
                     break;
                 case "left":
                     this.speedX = -3;
                     this.speedY = 0;
-                    this.img.src = "images/b4.png";
+                    this.img.src = "Images/b4.png";
                     break;
                 case "right":
                     this.speedX = 3;
                     this.speedY = 0;
-                    this.img.src = "images/b2.png";
+                    this.img.src = "Images/b2.png";
                     break;
             }
             this.x = x;
@@ -420,7 +420,7 @@ var a = [[9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9
                 else return true;
             }
             this.update = function () {
-                this.img.src = "images/e" + Math.ceil(this.step / 5) + ".png";
+                this.img.src = "Images/e" + Math.ceil(this.step / 5) + ".png";
                 ctx = myGameArea.context;
                 switch (Math.ceil(this.step / 5)) {
                     case 1:
