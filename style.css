@@ -3,3 +3,12 @@ canvas {
     border-color: black;
     background-color: black;
 }
+input {
+    width: 300px;
+    height: 80px;
+    font-size: 30px;
+    position: relative;
+    left: 250px;
+    top: 250px;
+    color: red;
+}
