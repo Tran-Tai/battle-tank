@@ -87,7 +87,7 @@ var a = [[9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9
             },
             stop: function () {
                 clearInterval(this.interval);
-                setTimeout(function () { alert("game over"); }, 0);
+                setTimeout(function () { alert("game over" + "\n" + "Your score is " + score); }, 0);
             }
         }
 
@@ -488,7 +488,7 @@ var a = [[9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9
                     else playerShell.splice(i, 1);
                 }
             }
-            if (myGameArea.frameNo % 192 == 0 && enemyTankCount < 21) {
+            if (myGameArea.frameNo % 192 == 0 && enemyTank.length < 10) {
                 enemyTankCount++;
                 let r = Math.floor(Math.random() * 3);
                 enemyTank[enemyTank.length] = new eTank(32, 32, r, (enemyTankCount % 3) * 384, 50);
