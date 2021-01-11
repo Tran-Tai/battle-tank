@@ -33,6 +33,8 @@ var a = [[9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9
             myGameArea.start();
             playerTank = new tank(32, 32, "Images/t1.png", 300, 594);
             var bgm = document.getElementById("bgm");
+            let track = Math.ceil(Math.random() * 3);
+            bgm.src = "BGM/track" + track + ".wav";
             bgm.play();
             bgm.loop = true;
         }
@@ -93,6 +95,7 @@ var a = [[9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9
             stop: function () {
                 clearInterval(this.interval);
                 setTimeout(function () { alert("game over" + "\n" + "Your score is " + score); }, 0);
+                bgm.pause();
             }
         }
 
