@@ -30,6 +30,8 @@ var explosion = [];
 var score = 0;
 var playerLife = 3;
 var enemyMax = 10;
+var bonusLevel = 1;
+var ingame = false;
 const TS = 32;
 const SS = 8;
 var bgm = document.getElementById("bgm");
@@ -41,15 +43,19 @@ function startGame() {
     document.getElementById("startgame").style.display = "none";
     document.getElementById("block").style.display = "none";
     myGameArea.start();
-    playerTank = new tank("Images/t1.png", 300, 594);
+    //tạo xe tănk của người chơi là 1 object thuộc lớp pTank
+    playerTank = new pTank("Images/t1.png", 300, 594);
+    ingame = true;
     playBGM();
 }
 function playBGM() {
-    let track = Math.ceil(Math.random() * 5);
-    if (track < 4) bgm.src = "BGM/track" + track + ".wav";
-    else bgm.src = "BGM/track" + track + ".flac";
-    bgm.play();
-    bgm.loop = true;
+    if (ingame) {
+        let track = Math.ceil(Math.random() * 5);
+        if (track < 4) bgm.src = "BGM/track" + track + ".wav";
+        else bgm.src = "BGM/track" + track + ".flac";
+        bgm.play();
+        bgm.loop = true;
+    }
 }
 
 var myGameArea = {
@@ -62,7 +68,8 @@ var myGameArea = {
         this.context.fillRect(0, 0, 800, 33);
         this.frameNo = 0;
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
-        this.interval = setInterval(updateGameArea, 20);   //update màn hình sau mỗi 20 milisecond
+        //update màn hình game sau mỗi 20 milisecond
+        this.interval = setInterval(updateGameArea, 20);   
         window.addEventListener('keydown', function (e) {
             myGameArea.keys = (myGameArea.keys || []);
             if (e.keyCode != 90) myGameArea.keys[e.keyCode] = true;
@@ -85,10 +92,11 @@ var myGameArea = {
         ctx.fillStyle = "#555555";
         ctx.fillRect(0, 34, 800, 12);
     },
+    //duyệt mảng 2 chiều để hiển thị bản đồ
     drawMap: function () {
         let ctx = this.context;
         for (i = 1; i < 19; i++)
-            for (j = 1; j < 26; j++) {      //duyệt mảng 2 chiều để hiển thị bản đồ
+            for (j = 1; j < 26; j++) {      
                 if (a[i][j] == 2) {
                     let img = new Image();
                     img.src = "Images/river.png";
@@ -123,7 +131,7 @@ var myGameArea = {
     }
 }
 
-function tank(url, x, y) {
+function pTank(url, x, y) {
     this.img = new Image();
     this.img.src = url;
     this.gamearea = myGameArea;
@@ -580,9 +588,10 @@ function updateGameArea() {
                             explosion[explosion.length] = new explode(enemyTank[j].x, enemyTank[j].y, 5);
                             score += enemyTank[j].score;
                             enemyTank.splice(j, 1);
-                            if (score % 50000 == 0) {
+                            if (Math.floor(score / 50000) == bonusLevel) {
                                 enemyMax += 2;
                                 playerLife += 1;
+                                bonusLevel += 1;
                             }
                         }
                     }
