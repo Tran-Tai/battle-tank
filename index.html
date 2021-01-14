@@ -8,8 +8,13 @@
     <link rel="stylesheet" href="style.css">
 </head>
 
-<body>
+<body onclick="playBGM()">
     <input id="startgame" type="button" value="START GAME" onclick="startGame()">
+    <div id = "block">
+        <p>Use Arrow Keys to Move</p>
+        <p id = "joke" onclick="change()">Press F to Pay Respects</p>
+        <p id = "real" style="display: none;">Press Z to Shoot</p>
+    </div>
     <audio id="bgm" src="BGM/track1.wav"></audio>
     <script src="script.js"></script>
 </body>
