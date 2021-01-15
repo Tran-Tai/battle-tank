@@ -12,10 +12,10 @@
     <input id="startgame" type="button" value="START GAME" onclick="startGame()">
     <div id = "block">
         <p>Use Arrow Keys to Move</p>
-        <p id = "joke" onclick="change()">Press Z to Shoot</p>   <!--Press F to Pay Respects-->
+        <p id = "joke" onclick="change()">Press F to Pay Respects</p>   <!--Press F to Pay Respects-->
         <p id = "real" style="display: none;">Press Z to Shoot</p>
     </div>
-    <div class="hide" id="gameOver">
+    <div class="hide" id="gameOver" onclick="reset()">
         <p>Game over</p>
         <p id="outputScore"></p>
     </div>

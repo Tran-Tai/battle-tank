@@ -57,7 +57,9 @@ function playBGM() {
         bgm.loop = true;
     }
 }
-
+function reset() {
+    location.reload();
+}
 var myGameArea = {
     canvas: document.createElement("canvas"),
     start: function () {
@@ -114,25 +116,26 @@ var myGameArea = {
                 }
             }
     },
+    //hiển thị các mảng rừng
     drawJungle: function () {
         let ctx = this.context;
         for (i = 1; i < 19; i++)
-            for (j = 1; j < 26; j++)      //duyệt mảng 2 chiều để hiển thị bản đồ
+            for (j = 1; j < 26; j++)      
                 if (a[i][j] == 1) {
                     let img = new Image();
                     img.src = "Images/jungle.png";
                     ctx.drawImage(img, (j - 1) * 32, (i - 1) * 32 + 50, 32, 32);
                 }
     },
+    //dừng cập nhật màn hình, dừng BGM, thông báo game over và hiển thị điểm người chơi
     stop: function () {
         clearInterval(this.interval);
-        //setTimeout(function () { alert("game over" + "\n" + "Your score is " + score); }, 0);
         document.getElementById("gameOver").style.display = "block";
         document.getElementById("outputScore").innerHTML = ("Your score is " + score);
         bgm.pause();
     }
 }
-
+    //tạo class pTank
 function pTank(url, x, y) {
     this.img = new Image();
     this.img.src = url;
@@ -145,11 +148,13 @@ function pTank(url, x, y) {
     this.ix = Math.floor((this.x) / 32 + 1);
     this.iy = Math.floor((this.y - 50) / 32 + 1);
     this.dir = "up";
+    //vẽ lại xe tăng người chơi sau mỗi frame
     this.update = function () {
         ctx = myGameArea.context;
         ctx.drawImage(this.img, this.x, this.y, TS, TS);
         if (this.cooldown > 0) this.cooldown -= 1;
     }
+    //tính toán lại vị trí xe tăng người chơi sau mỗi frame
     this.newPos = function () {
         this.x += this.speedX;
         this.y += this.speedY;
@@ -310,7 +315,7 @@ function eTank(color, type, armor, x, y) {
     }
 
     this.autoAim = function () {
-        if (myGameArea.frameNo % 100 == 0) this.shoot()
+        if (myGameArea.frameNo % 96 == 0) this.shoot()
         switch (this.dir) {
             case "up":
                 if ((Math.abs(playerTank.x - this.x) < Math.abs(playerTank.y - this.y) / 2)
