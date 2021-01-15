@@ -35,10 +35,6 @@ var ingame = false;
 const TS = 32;
 const SS = 8;
 var bgm = document.getElementById("bgm");
-function change() {
-    document.getElementById("joke").style.display = "none";
-    document.getElementById("real").style.display = "block";
-}
 function startGame() {
     document.getElementById("startgame").style.display = "none";
     document.getElementById("block").style.display = "none";
@@ -81,6 +77,7 @@ var myGameArea = {
             if (e.keyCode == 90) myGameArea.keys[90] = true;
         })
     },
+    //khởi tạo lại nền màn hình sau mỗi frame
     clear: function () {
         let ctx = this.context;
         ctx.clearRect(0, 46, this.canvas.width, this.canvas.height);
@@ -133,6 +130,7 @@ var myGameArea = {
         document.getElementById("gameOver").style.display = "block";
         document.getElementById("outputScore").innerHTML = ("Your score is " + score);
         bgm.pause();
+        ingame = false;
     }
 }
     //tạo class pTank
@@ -219,8 +217,9 @@ function pTank(url, x, y) {
         }
     }
 }
-
+//tạo class cho xe tăng địch
 function eTank(color, type, armor, x, y) {
+    //chọn màu xe dựa vào tham số color
     switch (color) {
         case 0:
             this.color = "g";
@@ -232,6 +231,7 @@ function eTank(color, type, armor, x, y) {
             this.color = "r";
             break;
     }
+    //chọn tốc độ chạy, vỏ giáp, tốc độ đạn, điểm số dựa vào loại xe truyền qua tham số type
     switch (type) {
         case 1:
             this.speed = 1;
@@ -268,17 +268,20 @@ function eTank(color, type, armor, x, y) {
     this.existence = true;
     this.dir = "down";
     this.cooldown = 0;
+    //vẽ lại xe tăng địch sau mỗi frame
     this.update = function () {
         ctx = myGameArea.context;
         ctx.drawImage(this.img, this.x, this.y, TS, TS);
         if (this.cooldown > 0) this.cooldown -= 1;
     }
+    //cập nhập lại vị trí xe tăng địch sau mỗi frame
     this.newPos = function () {
         this.x += this.speedX;
         this.y += this.speedY;
         this.ix = Math.floor((this.x) / 32 + 1);
         this.iy = Math.floor((this.y - 50) / 32 + 1);
     }
+    //hàm điều khiển xe địch tự lái
     this.autoDrive = function () {
         if (myGameArea.frameNo % this.time == 0) {
             let r = Math.floor(Math.random() * 4);
@@ -313,7 +316,7 @@ function eTank(color, type, armor, x, y) {
         }
         if (this.cooldown == 0) this.autoAim();
     }
-
+    //hàm điều khiển xe địch tự động bắn khi xe người chơi nằm trong khoảng 53 độ phía trước
     this.autoAim = function () {
         if (myGameArea.frameNo % 96 == 0) this.shoot()
         switch (this.dir) {
@@ -404,7 +407,7 @@ function eTank(color, type, armor, x, y) {
                 break;
         }
         enemyShell[enemyShell.length] = new shell(this.dir, xs, ys, this.shellSpeed);
-        if (this.type == 1) this.cooldown = 30;
+        if (this.type == 1) this.cooldown = 30; //xe tăng thuộc loại 1 sẽ có tốc độ cooldown nhanh hơn
         else this.cooldown = 50;
     }
 }
@@ -441,13 +444,16 @@ function shell(dir, x, y, speed) {
     this.ix = Math.floor((this.x) / 32 + 1);
     this.iy = Math.floor((this.y - 50) / 32 + 1);
     this.existence = true;
+    //vẽ lại đạn sau mỗi frame và kiểm tra va chạm vật cản
     this.update = function () {
         ctx = myGameArea.context;
         ctx.drawImage(this.img, this.x, this.y, SS, SS);
         switch (this.dir) {
             case "up":
+                //kiểm tra nếu gặp vật cản sẽ xóa bỏ đạn
                 if (a[this.iy][this.ix] > 2 && ((this.y + 8 - ((this.iy) * 32 + 50) <= 8))) {
                     this.existence = false;
+                    //kiểm tra nếu vật cản là tường gạch thì sẽ khiến tường nổ và biến mất
                     if (a[this.iy][this.ix] == 3) {
                         a[this.iy][this.ix] = 0;
                         explosion[explosion.length] =
@@ -487,6 +493,7 @@ function shell(dir, x, y, speed) {
                 break;
         }
     }
+    //cập nhật lại vị trí đạn sau mỗi frame
     this.newPos = function () {
         this.x += this.speedX;
         this.y += this.speedY;
@@ -494,15 +501,17 @@ function shell(dir, x, y, speed) {
         this.iy = Math.floor((this.y - 50) / 32 + 1);
     }
 }
-
+//tạo các vụ nổ
 function explode(x, y, t) {
     this.step = 1;
     this.time = t * 5;
     this.img = new Image();
+    //hàm kiểm tra, khi qua đủ thời gian sẽ xóa sự tồn tại của vụ nổ
     this.existence = function () {
         if (this.step > this.time) return false;
         else return true;
     }
+    //cập nhật lại hình dạng vụ nổ qua các giai đoạn
     this.update = function () {
         this.img.src = "Images/e" + Math.ceil(this.step / 5) + ".png";
         ctx = myGameArea.context;
@@ -546,20 +555,23 @@ function explode(x, y, t) {
         }
     }
 }
-
+//cập nhật lại toàn bộ màn hình game cùng các đối tượng bên trong theo mỗi frame
 function updateGameArea() {
     myGameArea.clear();
     playerTank.speedX = 0;
     playerTank.speedY = 0;
+    //nhận sự kiện bàn phím để điều khiển xe người chơi
     if (myGameArea.keys && myGameArea.keys[37]) { playerTank.moveLeft(); }
     if (myGameArea.keys && myGameArea.keys[39]) { playerTank.moveRight(); }
     if (myGameArea.keys && myGameArea.keys[38]) { playerTank.moveUp(); }
     if (myGameArea.keys && myGameArea.keys[40]) { playerTank.moveDown(); }
     if (myGameArea.keys && myGameArea.keys[90]) { playerTank.shoot(); }
+    //cập nhật vị trí, vẽ xe tăng người chơi nếu game chưa kết thúc
     if (endgame == false) {
         playerTank.newPos();
         playerTank.update();
     }
+    //tạo xe tăng mới của địch
     if (myGameArea.frameNo % 192 == 0 && enemyTank.length < enemyMax) {
         enemyTankCount++;
         let c = Math.floor(Math.random() * 3);
@@ -567,6 +579,7 @@ function updateGameArea() {
         let ar = Math.ceil(Math.random() * 3);
         enemyTank[enemyTank.length] = new eTank(c, t, ar, (enemyTankCount % 3) * 384, 50);
     }
+    //điều khiển xe địch tự động lái, cập nhật vị trí và vẽ xe tăng địch
     if (enemyTank.length > 0) {
         for (i = 0; i < enemyTank.length; i++) {
             enemyTank[i].autoDrive();
@@ -574,13 +587,16 @@ function updateGameArea() {
             enemyTank[i].update();
         }
     }
+    //vẽ các vụ nổ, loại bỏ các vụ nổ đã trải qua đủ các giai đoạn (không còn tồn tại)
     for (i = 0; i < explosion.length; i++) {
         if (explosion[i].existence()) {
             explosion[i].update();
         }
         else explosion.splice(i, 1);
     }
+    //vẽ lại bản đồ (ngoại trừ các mảng rừng)
     myGameArea.drawMap();
+    //kiểm tra va chạm của đạn người chơi với xe tăng địch
     if (playerShell.length > 0) {
         for (i = 0; i < playerShell.length; i++) {
             if (playerShell[i].existence) {
@@ -604,9 +620,11 @@ function updateGameArea() {
                     }
                 }
             }
+            //loại bỏ các viên đạn không còn tồn tại (đã va chạm)
             else playerShell.splice(i, 1);
         }
     }
+    //kiểm tra va chạm của đạn của địch với xe tăng người chơi
     if (enemyShell.length > 0) {
         for (i = 0; i < enemyShell.length; i++) {
             if (enemyShell[i].existence) {
@@ -630,10 +648,13 @@ function updateGameArea() {
                     }
                 }
             }
+            //loại bỏ các viên đạn không còn tồn tại (đã va chạm)
             else enemyShell.splice(i, 1);
         }
     }
+    //vẽ các mảng rừng
     myGameArea.drawJungle();
+    //ghi lại số frame
     myGameArea.frameNo += 1;
     if (myGameArea.frameNo == endframe) { myGameArea.stop(); }
 }
