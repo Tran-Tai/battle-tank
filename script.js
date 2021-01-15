@@ -126,7 +126,9 @@ var myGameArea = {
     },
     stop: function () {
         clearInterval(this.interval);
-        setTimeout(function () { alert("game over" + "\n" + "Your score is " + score); }, 0);
+        //setTimeout(function () { alert("game over" + "\n" + "Your score is " + score); }, 0);
+        document.getElementById("gameOver").style.display = "block";
+        document.getElementById("outputScore").innerHTML = ("Your score is " + score);
         bgm.pause();
     }
 }
