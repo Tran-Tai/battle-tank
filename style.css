@@ -9,10 +9,12 @@ canvas {
     padding-right: 0;
     margin-left: auto;
     margin-right: auto;
+    margin-top: 50px;
+    z-index: -1;
     display: block;
 }
 input {
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: rgba(0, 0, 0, 0.1);
     width: 300px;
     height: 80px;
     font-size: 40px;
@@ -24,6 +26,9 @@ input {
     margin-top: 300px;
     color: red;
 }
+input:hover {
+    background-color: rgba(0, 0, 0, 0.5);
+}
 div {
     width: 100%;
 }
@@ -31,7 +36,7 @@ p {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 25px;
     font-weight: bolder;
-    color: orangered;
+    color: gold;
     text-align: center;
 }
 #gameOver {
@@ -41,14 +46,12 @@ p {
     border-color: darkgreen;
     border-radius: 5px 80px;
     top: 250px;
-    left: 522px;
-    padding: 14px;
-    margin: auto;
     background-color: rgba(255, 255, 255, 0.3);
     display: none;
     width: 300px;
     height: 140px;
     text-align: center;
+    vertical-align: middle;
 }
 #gameOver>p {
     color: darkred;
